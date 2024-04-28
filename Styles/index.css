@@ -429,6 +429,7 @@ img {
 }
 
 .home_description {
+  text-align: justify;
   margin-top: var(--mb-2);
   margin-bottom: var(--mb-2);
 }
@@ -478,6 +479,9 @@ img {
   margin-bottom: var(--mb-2-5);
 }
 
+.project-description{
+  text-align: justify;
+}
 .about_info {
   display: flex;
   justify-content: space-evenly;
