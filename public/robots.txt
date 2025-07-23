@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://portfolio.abhaysinh.dev
+
+# Sitemaps
+Sitemap: https://portfolio.abhaysinh.dev/sitemap.xml
