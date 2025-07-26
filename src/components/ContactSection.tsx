@@ -10,11 +10,12 @@ export const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("https://formspree.io/f/mbjnozkp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData)
       });
+      console.log("response",response);
       if (response.ok) {
         setStatus("Message sent successfully!");
         setFormData({ name: "", email: "", message: "" });
@@ -80,7 +81,7 @@ export const ContactSection = () => {
                 target="_blank"
               >
                 <span className="contact_subtitle">
-                  https://www.linkedin.com/in/abhaysinh-anil-gaikwad/
+                  https://www.linkedin.com/in/abhaysinh0/
                 </span>
               </Link>
             </div>
