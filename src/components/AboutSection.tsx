@@ -1,30 +1,30 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect } from "react";
+import {
+  aboutIntro,
+  stats,
+  resumeLink,
+  experienceData,
+  educationData,
+} from "../data/aboutData";
 
 export const AboutSection = () => {
   useEffect(() => {
-    // Tab switching logic
     const tabs = document.querySelectorAll(".qualification_button");
     const contents = document.querySelectorAll(".qualification_content");
 
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         const target = tab.getAttribute("data-target");
-        contents.forEach((content) => {
-          content.classList.remove("qualification_active");
-        });
-        tabs.forEach((t) => {
-          t.classList.remove("qualification_active");
-        });
-        document
-          .querySelector(target!)
-          ?.classList.add("qualification_active");
+        contents.forEach((content) =>
+          content.classList.remove("qualification_active")
+        );
+        tabs.forEach((t) => t.classList.remove("qualification_active"));
+        document.querySelector(target!)?.classList.add("qualification_active");
         tab.classList.add("qualification_active");
 
-        // Track tab clicks with Google Analytics
         if (typeof window !== "undefined" && window.gtag) {
           window.gtag("event", "qualification_tab_click", {
             event_category: "Tab",
@@ -34,7 +34,6 @@ export const AboutSection = () => {
       });
     });
 
-    // Track resume button click
     const resumeButton = document.getElementById("resume-button-2");
     resumeButton?.addEventListener("click", () => {
       if (typeof window !== "undefined" && window.gtag) {
@@ -45,6 +44,42 @@ export const AboutSection = () => {
       }
     });
   }, []);
+
+  const renderQualificationData = (data: typeof experienceData) =>
+    data.map((item, index) => (
+      <div className="qualification_data" key={index}>
+        {index % 2 === 0 ? (
+          <>
+            <div>
+              <h3 className="qualification_title">{item.title}</h3>
+              <span className="qualification_subtitle">{item.subtitle}</span>
+              <div className="qualification_calender">
+                <i className="uil uil-calendar-alt"></i> {item.date}
+              </div>
+            </div>
+            <div>
+              <span className="qualification_rounder"></span>
+              <span className="qualification_line"></span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div></div>
+            <div>
+              <span className="qualification_rounder"></span>
+              <span className="qualification_line"></span>
+            </div>
+            <div>
+              <h3 className="qualification_title">{item.title}</h3>
+              <span className="qualification_subtitle">{item.subtitle}</span>
+              <div className="qualification_calender">
+                <i className="uil uil-calendar-alt"></i> {item.date}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    ));
 
   return (
     <section className="about section" id="about">
@@ -59,33 +94,20 @@ export const AboutSection = () => {
         />
         <div className="about_data">
           <p className="about_description" id="user-detail-intro">
-            I'm a Fullstack Engineer with over 1 year of experience at PropFTX,
-            where I architect scalable backend services using Node.js, Next.js,
-            and AWS. My expertise lies in serverless architectures, database
-            optimization, and secure integrations like KYC and payment systems.
-            Passionate about solving complex problems, I leverage technologies
-            like TypeScript, PostgreSQL, and CI/CD pipelines to deliver efficient,
-            scalable solutions. My collaborative approach and commitment to
-            excellence drive me to create impactful applications.
+            {aboutIntro}
           </p>
           <div className="about_info">
-            <div>
-              <span className="about_info-title">1+</span>
-              <span className="about_info-name">Years Experience</span>
-            </div>
-            <div>
-              <span className="about_info-title">15+</span>
-              <span className="about_info-name">Projects</span>
-            </div>
-            <div>
-              <span className="about_info-title">300+</span>
-              <span className="about_info-name">DSA Problems</span>
-            </div>
+            {stats.map((stat, i) => (
+              <div key={i}>
+                <span className="about_info-title">{stat.title}</span>
+                <span className="about_info-name">{stat.name}</span>
+              </div>
+            ))}
           </div>
           <div className="about_buttons">
             <button className="button" id="resume-button-2">
               <a
-                href="https://abhaysinh.dev"
+                href={resumeLink}
                 className="button-flex"
                 id="resume-link-2"
                 target="_blank"
@@ -97,6 +119,7 @@ export const AboutSection = () => {
           </div>
         </div>
       </div>
+
       <div className="qualification">
         <div className="qualification_container container">
           <div className="qualification_tabs">
@@ -121,58 +144,15 @@ export const AboutSection = () => {
               data-content
               id="experience"
             >
-              <div className="qualification_data">
-                <div>
-                  <h3 className="qualification_title">
-                    Software Development Engineer I
-                  </h3>
-                  <span className="qualification_subtitle">PropFTX</span>
-                  <div className="qualification_calender">
-                    <i className="uil uil-calendar-alt"></i> Jul 2024 - Present
-                  </div>
-                </div>
-                <div>
-                  <span className="qualification_rounder"></span>
-                  <span className="qualification_line"></span>
-                </div>
-              </div>
+              {renderQualificationData(experienceData)}
             </div>
-            <div className="qualification_content" data-content id="education">
-              <div className="qualification_data">
-                <div>
-                  <h3 className="qualification_title">
-                    Full Stack Web Development
-                  </h3>
-                  <span className="qualification_subtitle">
-                    Masai School, Bengaluru
-                  </span>
-                  <div className="qualification_calender">
-                    <i className="uil uil-calendar-alt"></i> Sep 2023 - Jun 2024
-                  </div>
-                </div>
-                <div>
-                  <span className="qualification_rounder"></span>
-                  <span className="qualification_line"></span>
-                </div>
-              </div>
-              <div className="qualification_data">
-                <div></div>
-                <div>
-                  <span className="qualification_rounder"></span>
-                  <span className="qualification_line"></span>
-                </div>
-                <div>
-                  <h3 className="qualification_title">
-                    Bachelor of Arts (English)
-                  </h3>
-                  <span className="qualification_subtitle">
-                    Shivaji University, Kolhapur
-                  </span>
-                  <div className="qualification_calender">
-                    <i className="uil uil-calendar-alt"></i> Jul 2019 - Oct 2022
-                  </div>
-                </div>
-              </div>
+
+            <div
+              className="qualification_content"
+              data-content
+              id="education"
+            >
+              {renderQualificationData(educationData)}
             </div>
           </div>
         </div>

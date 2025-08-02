@@ -4,18 +4,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import Typed from "typed.js";
+import { homeData } from "../data/homeData";
 
 export const HomeSection = () => {
   useEffect(() => {
-    // Initialize Typed.js for auto-typing
     const typed = new Typed(".auto-type", {
-      strings: ["Node.js Backend Developer"],
+      strings: [homeData.title],
       typeSpeed: 50,
       backSpeed: 50,
       loop: true
     });
 
-    // Track social link clicks with Google Analytics
     const socialLinks = document.querySelectorAll(".home_social-icon");
     socialLinks.forEach((link) => {
       link.addEventListener("click", () => {
@@ -41,22 +40,17 @@ export const HomeSection = () => {
       <div className="home_container container grid">
         <div className="home_content grid">
           <div className="home_social">
-            <Link
-              id="contact-linkedin"
-              href="https://www.linkedin.com/in/abhaysinh-anil-gaikwad/"
-              target="_blank"
-              className="home_social-icon"
-            >
-              <i className="uil uil-linkedin-alt"></i>
-            </Link>
-            <Link
-              id="contact-github"
-              href="https://github.com/abhaysinh-gaikwad"
-              target="_blank"
-              className="home_social-icon"
-            >
-              <i className="uil uil-github-alt"></i>
-            </Link>
+            {homeData.socialLinks.map((link) => (
+              <Link
+                key={link.id}
+                id={link.id}
+                href={link.href}
+                target="_blank"
+                className="home_social-icon"
+              >
+                <i className={link.iconClass}></i>
+              </Link>
+            ))}
           </div>
           <div className="home_img">
             <svg
@@ -84,7 +78,7 @@ export const HomeSection = () => {
                   x="10"
                   y="1"
                   className="home_blob-img"
-                  href="/Photos/abhay-removebg.png"
+                  href={homeData.imagePath}
                 />
               </g>
             </svg>
@@ -93,18 +87,12 @@ export const HomeSection = () => {
             <h1 className="home_title" id="user-detail-name">
               Hi👋, I'm
               <br />
-              <span style={{ fontSize: "40px" }}>Abhaysinh Gaikwad</span>
+              <span style={{ fontSize: "40px" }}>{homeData.name}</span>
             </h1>
             <h3 className="home_subtitle">
               <span className="auto-type"></span>
             </h3>
-            <p className="home_description">
-              Fullstack Engineer with over 1 year of experience at PropFTX,
-              specializing in building scalable backend services using Node.js,
-              Next.js, and AWS. Proficient in serverless architectures, database
-              optimization, and secure payment integrations, I deliver robust
-              solutions for real-world challenges.
-            </p>
+            <p className="home_description">{homeData.description}</p>
             <div className="btn_container">
               <Link href="#contact" className="button button-flex sec_button">
                 Connect with Me <i className="uil uil-message button_icon"></i>

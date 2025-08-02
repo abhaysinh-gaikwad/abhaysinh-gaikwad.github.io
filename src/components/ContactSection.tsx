@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { contactInfo, contactIntro, formspreeEndpoint } from "../data/contactData";
 
 export const ContactSection = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
@@ -10,16 +11,15 @@ export const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://formspree.io/f/mbjnozkp", {
+      const response = await fetch(formspreeEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
-      console.log("response",response);
+
       if (response.ok) {
         setStatus("Message sent successfully!");
         setFormData({ name: "", email: "", message: "" });
-        // Track form submission with Google Analytics
         if (typeof window !== "undefined" && window.gtag) {
           window.gtag("event", "contact_form_submit", {
             event_category: "Form",
@@ -45,54 +45,29 @@ export const ContactSection = () => {
       <h2 className="section_title">Contact Me</h2>
       <div className="contact_container container grid">
         <div>
-          <p className="contact_message">
-            Feel free to drop a message if you have any suggestions or
-            collaboration ideas, and we'll get in touch.
-          </p>
-          <div className="contact_information">
-            <i className="uil uil-phone-alt contact_icon"></i>
-            <div>
-              <h3 id="contact-phone" className="contact_title">
-                Contact Me
-              </h3>
-              <span className="contact_subtitle">+91 7666387724</span>
+          <p className="contact_message">{contactIntro}</p>
+
+          {contactInfo.map((info, i) => (
+            <div className="contact_information" key={i}>
+              <i className={`uil ${info.icon} contact_icon`}></i>
+              <div>
+                <h3 className="contact_title">{info.title}</h3>
+                {info.isLink ? (
+                  <Link href={info.subtitle} target="_blank">
+                    <span className="contact_subtitle">{info.subtitle}</span>
+                  </Link>
+                ) : (
+                  <span className="contact_subtitle">{info.subtitle}</span>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="contact_information">
-            <i className="uil uil-envelope-alt contact_icon"></i>
-            <div id="contact-email">
-              <h3 className="contact_title">Email-Id</h3>
-              <span className="contact_subtitle">abhaygaikwad7666@gmail.com</span>
-            </div>
-          </div>
-          <div className="contact_information">
-            <i className="uil uil-location-pin-alt contact_icon"></i>
-            <div>
-              <h3 className="contact_title">Location</h3>
-              <span className="contact_subtitle">Sangli, Maharashtra</span>
-            </div>
-          </div>
-          <div className="contact_information">
-            <i className="uil uil-linkedin-alt contact_icon"></i>
-            <div>
-              <h3 className="contact_title">LinkedIn</h3>
-              <Link
-                href="https://www.linkedin.com/in/abhaysinh-anil-gaikwad/"
-                target="_blank"
-              >
-                <span className="contact_subtitle">
-                  https://www.linkedin.com/in/abhaysinh0/
-                </span>
-              </Link>
-            </div>
-          </div>
+          ))}
         </div>
+
         <form onSubmit={handleSubmit} className="contact_form grid">
           <div className="contact_inputs grid">
             <div className="contact_content">
-              <label htmlFor="name" className="contact_label">
-                Name
-              </label>
+              <label htmlFor="name" className="contact_label">Name</label>
               <input
                 name="name"
                 type="text"
@@ -104,9 +79,7 @@ export const ContactSection = () => {
               />
             </div>
             <div className="contact_content">
-              <label htmlFor="email" className="contact_label">
-                Email
-              </label>
+              <label htmlFor="email" className="contact_label">Email</label>
               <input
                 name="email"
                 id="email"
@@ -118,10 +91,9 @@ export const ContactSection = () => {
               />
             </div>
           </div>
+
           <div className="contact_content">
-            <label htmlFor="message" className="contact_label">
-              Message
-            </label>
+            <label htmlFor="message" className="contact_label">Message</label>
             <textarea
               name="message"
               id="message"
@@ -132,12 +104,14 @@ export const ContactSection = () => {
               onChange={handleChange}
             ></textarea>
           </div>
+
           <div>
             <button className="button button-flex" type="submit">
               Send Message
               <i className="uil uil-message button_icon"></i>
             </button>
           </div>
+
           {status && <p>{status}</p>}
         </form>
       </div>

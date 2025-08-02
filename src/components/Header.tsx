@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { personalData } from "../data/personalData";
 
 export const Header = () => {
   useEffect(() => {
-    // Nav toggle and theme switch logic
     const navToggle = document.getElementById("nav-toggle");
     const navMenu = document.getElementById("nav-menu");
     const navClose = document.getElementById("nav-close");
@@ -37,14 +37,13 @@ export const Header = () => {
       });
     }
 
-    // Google Analytics event tracking for resume download
     const resumeButtons = document.querySelectorAll(".resume");
     resumeButtons.forEach((button) => {
       button.addEventListener("click", () => {
         if (typeof window !== "undefined" && window.gtag) {
           window.gtag("event", "resume_download", {
             event_category: "Button",
-            event_label: "Resume Download - Header",
+            event_label: personalData.resumeDownloadLabel,
           });
         }
       });
@@ -55,7 +54,8 @@ export const Header = () => {
     <header className="header" id="header">
       <nav className="nav container">
         <Link href="/" className="nav_logo">
-          <span> &lt; Abhaysinh </span>Gaikwad / &gt;
+          <span> &lt; {personalData.fullName.split(" ")[0]} </span>
+          {personalData.fullName.split(" ")[1]} / &gt;
         </Link>
         <div className="nav_menu" id="nav-menu">
           <ul className="nav_list grid">
@@ -92,12 +92,11 @@ export const Header = () => {
             <li className="nav_item">
               <button id="resume-button-1" className="nav-link resume">
                 <a
-                  href="https://abhaysinh.dev"
+                  href={personalData.portfolioUrl}
                   className="button-flex"
                   id="resume-link-1"
                   target="_blank"
                   rel="noopener noreferrer"
-                  // download="Abhaysinh-Gaikwad-Resume.pdf"
                 >
                   <i className="uil uil-download-alt nav_icon"></i> Resume
                 </a>
